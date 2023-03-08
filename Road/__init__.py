@@ -1,5 +1,4 @@
-from fastapi import FastAPI,Request
-from http import HTTPStatus
+from fastapi import FastAPI
 import logging
 app = FastAPI(
     title="Road Status API",

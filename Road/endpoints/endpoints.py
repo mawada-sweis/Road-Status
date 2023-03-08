@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from fastapi import Request
 from Road import app,logger
-
 @app.get("/health")
 def _health_check(request:Request)->dict:
     """Health check"""
@@ -11,5 +10,6 @@ def _health_check(request:Request)->dict:
         "status-code":HTTPStatus.OK,
         "data":{}
     }
+    
     logger.info(f"Health check Status-code :{HTTPStatus.OK} ")
     return response

@@ -21,12 +21,12 @@
     |
     ├── references          <- Data dictionaries, manuals, and all other explanatory materials.
     |
-    └── src                 <- Source code for use in this project.
+    └── source              <- Source code for use in this project.
         ├── __init__.py     <- Makes src a Python module (sub module inside Road Module)
         ├── constants.py    <- file for constant values in the project
         ├── utils.py        <- file for functions used in the project 
         ├── data            <- Scripts to download or generate data
-        ├── make_dataset.py
+        |    └── make_dataset.py 
         ├── features        <- Scripts to turn raw data into features for modeling
         |    └── build_features.py
         |
@@ -36,14 +36,7 @@
 
 
 
-*************
-if you are working inside src folder in any file inside folder and you want to import somthing from src/utils for example 
-you should follow this pattern
-import sys
-sys.path.insert(0, '../../')  # Add parent directory to system path
-from source.utils import test
-otherwise the python will not see the utils
-*************
+
 *************
 if you are working outside src folder in any file inside folder and you want to import somthing from src/utils for example 
 you should follow this pattern

@@ -180,7 +180,7 @@ docs_build
 venv
 docs.zip
 archive.zip
-
+*.log
 # vim temporary files
 *~
 .*.sw?

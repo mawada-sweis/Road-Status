@@ -4,7 +4,7 @@ from Road import app,logger
 if __name__ == "__main__":
     file_name = __file__.split("/")[-1].split(".")[0].split("\\")[-1] # file name without extension
     logger.info("Server is Trying to Start ... ")
-    uvicorn.run(f"{file_name}:app", host='0.0.0.0', port=8000, reload=True) # a code to replace the statement uvicorn run:app --reload 
+    uvicorn.run(f"{file_name}:app", host='0.0.0.0', port=8000, reload=True) # run the app using uvicorn run:app --reload 
     logger.info("Server is Start Succesfully ... ")
     
 # to run the backend follow these steps : 
