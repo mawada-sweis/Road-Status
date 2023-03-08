@@ -33,3 +33,22 @@
         └── models          <- Scripts to train models and then use trained models to make predictions                
             ├── predict_model.py
             └── train_model.py
+
+
+
+*************
+if you are working inside src folder in any file inside folder and you want to import somthing from src/utils for example 
+you should follow this pattern
+import sys
+sys.path.insert(0, '../../')  # Add parent directory to system path
+from source.utils import test
+otherwise the python will not see the utils
+*************
+*************
+if you are working outside src folder in any file inside folder and you want to import somthing from src/utils for example 
+you should follow this pattern
+import sys
+sys.path.insert(0, '../')  # Add parent directory to system path
+from source.utils import test
+otherwise the python will not see the utils
+*************
