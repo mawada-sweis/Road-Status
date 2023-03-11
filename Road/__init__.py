@@ -6,7 +6,7 @@ app = FastAPI(
     version=0.1
 )
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='Road/logs/RouadStatus.log',level=logging.DEBUG)
+logging.basicConfig(filename='Road/logs/RouadStatus.log', level=logging.DEBUG)
 
 
 from Road.endpoints import endpoints
