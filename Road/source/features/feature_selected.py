@@ -1,15 +1,19 @@
-# Import constant values
-from source.constants import COLUMNS_TO_KEEP
-# Necessary libraries
-import pandas as pd
+# Standard library imports
 import ast
 import sys
 import os
+
+# Related third party imports
+import pandas as pd
+
 # Reset the path to the parent folder to import any mudule we want
 target = os.path.abspath(__file__)
 while (target.split("\\")[-1] != "Road"):
     target = os.path.dirname(target)
 sys.path.append(target)
+
+# Local imports
+from source.constants import COLUMNS_TO_KEEP
 
 
 def delete_unnecessery_columns(data: pd.DataFrame) -> None:
@@ -34,12 +38,13 @@ def extract_dates(date: pd.Series) -> None:
     Returns:
         None
     """
-    year = pd.to_datetime(date).dt.year
-    month = pd.to_datetime(date).dt.month
-    day = pd.to_datetime(date).dt.day
-    hour = pd.to_datetime(date).dt.hour
-    minute = pd.to_datetime(date).dt.minute
-    second = pd.to_datetime(date).dt.second
+    date = pd.to_datetime(date)
+    year =date.dt.year
+    month =date.dt.month
+    day =date.dt.day
+    hour =date.dt.hour
+    minute =date.dt.minute
+    second =date.dt.second
 
     return (year, month, day, hour, minute, second)
 
