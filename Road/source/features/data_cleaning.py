@@ -3,8 +3,6 @@ import pandas as pd
 import numpy as np 
 import re
 import string 
-import nltk
-import spacy
 
 # Local imports
 # from source.constants import PUNCT_TO_REMOVE
@@ -57,32 +55,25 @@ def remove_diacritics(text: str) -> str:
     else:
         return text
 
-def convert_emojis(text: str) -> str:
+def remove_emojis_emoticons(text: str) -> str:
     """
-    Convert emojis in text to their corresponding text representation.
+    Remove emojis and emoticons from text.
 
     Args:
-        text (str): The input text with emojis.
+        text (str): The input text.
 
     Returns:
-        str: The input text with emojis replaced by their corresponding text representation.
+        str: The input text with emojis and emoticons removed.
     """
-    return emoji.demojize(text)
-
-def convert_emoticons(text: str) -> str:
-    """
-    Convert emoticons in text to their corresponding text representation.
-
-    Args:
-        text (str): The input text with emoticons.
-
-    Returns:
-        str: The input text with emoticons replaced by their corresponding text representation.
-    """
+    # remove emojis
+    text = emoji.demojize(text, delimiters=("", ""))
+    
+    # remove emoticons
     emo_obj = emot.EMOTICONS_EMO
     for emot1 in emo_obj:
         escaped_emot = re.escape(emot1)
-        text = re.sub(u'({})'.format(escaped_emot), "_".join(emo_obj[emot1].replace(",","").split()), text)
+        text = re.sub(u'({})'.format(escaped_emot), "_".join(emo_obj[emot1].replace(",", "").split()), text)
+    
     return text
 
 def remove_urls(text: str) -> str:
