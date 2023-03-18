@@ -5,6 +5,7 @@ import sys
 
 # Related third party imports
 import pandas as pd
+import numpy as np
 
 # Reset the path to the parent folder to import any mudule we want
 target = os.path.abspath(__file__)
@@ -36,8 +37,11 @@ def _categorize_message(text):
 def categorize_message(reply_column, message_column):
     categorized = []
     for i, reply in enumerate(reply_column):
-        if isinstance(reply, str):
-            categorized.append('answered')
+        if reply is np.NAN:
+            message = message_column[i]
+            categorized.append(
+                _categorize_message(message)
+            ) if message is not np.NAN else 'NAN'
         else:
-            categorized.append(_categorize_message(message_column[i]))
+            categorized.append('answered')
     return pd.Series(categorized)
