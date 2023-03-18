@@ -1,5 +1,5 @@
 # Import constant values
-from source.constants import COLUMNS_TO_DELETE
+from source.constants import COLUMNS_TO_KEEP
 # Necessary libraries
 import pandas as pd
 import ast
@@ -22,8 +22,7 @@ def delete_unnecessery_columns(data: pd.DataFrame) -> None:
     Returns:
         None
     """
-    data.drop(columns=COLUMNS_TO_DELETE, inplace=True)
-
+    return data[COLUMNS_TO_KEEP].copy()
 
 def extract_dates(date: pd.Series) -> None:
     """Extract year, month, day, hour, minute, and second values
