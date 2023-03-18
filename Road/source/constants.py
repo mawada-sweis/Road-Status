@@ -5,4 +5,9 @@ CLASS = 5
 
 PLEASE WRITE CONSTANT VARIABLE NAME ALWAYS CAPITALIZED
 """
+import re
+
 COLUMNS_TO_KEEP = ['id', 'date', 'message', 'from_id', 'reply_to']
+
+# define regular expressions for question message category
+question_regex = re.compile(r"\?*|كيف|شو وضع|\؟*|في اشي|نمر|شي")
