@@ -5,3 +5,4 @@ CLASS = 5
 
 PLEASE WRITE CONSTANT VARIABLE NAME ALWAYS CAPITALIZED
 """
+COLUMNS_TO_KEEP = ['id', 'date', 'message', 'from_id', 'reply_to']
