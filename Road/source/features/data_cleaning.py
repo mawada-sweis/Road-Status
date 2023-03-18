@@ -138,3 +138,31 @@ def remove_multimedia(text: str) -> str:
     text = re.sub(r'pic\.twitter\.com/\S+', '', text)
     text = re.sub(r'@(\w+)', '', text)
     return text
+
+def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Map each message to its corresponding reply message in the "reply" column, and delete any rows with non -1 reply_to values.
+
+    Args:
+        data (pandas.DataFrame): The input DataFrame containing message data.
+
+    Returns:
+        pandas.DataFrame: The modified DataFrame with mapped reply messages and deleted rows.
+    """
+    # create an empty dictionary to store message-reply mappings
+    message_reply_dict = {}
+
+    # iterate over each row in the dataframe
+    for i, row in data.iterrows():
+        # check if the row has a valid reply_to value
+        if row["reply_to"] != -1:
+            # store the message-reply mapping in the dictionary
+            message_reply_dict[row["reply_to"]] = row["message"]
+
+    # update the reply column with the corresponding reply message
+    data["reply"] = data["id"].map(message_reply_dict)
+
+    # delete any rows with non -1 reply_to values
+    data = data[data["reply_to"] == -1]
+
+    return data
