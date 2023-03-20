@@ -25,6 +25,7 @@ import emoji
 import emot
 
 
+
 def remove_diacritics(text: str) -> str:
     """
     Remove diacritics from Arabic text and reshape it to proper Arabic script.
@@ -157,3 +158,37 @@ def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
     data = data[data["reply_to"] == -1]
 
     return data
+
+
+def clean_text(text: str) -> str:
+    """
+    This function takes a string input and performs various cleaning operations to remove unwanted characters from the text data.
+    The cleaned text is returned as output.
+
+    Args:
+        text (str): The input string to be cleaned.
+
+    Returns:
+        str : The cleaned text string.
+    """
+    
+    # Remove diacritics (accents) from text
+    text = remove_diacritics(text)
+    
+    # Remove emojis and emoticons from text
+    text = remove_emojis_emoticons(text)
+    
+    # Remove URLs from text
+    text = remove_urls(text)
+    
+    # Remove phone numbers from text
+    text = remove_phone_numbers(text)
+    
+    # Remove punctuation marks from text
+    text = remove_punctuations(text)
+    
+    # Remove multimedia elements from text
+    text = remove_multimedia(text)
+
+    # Return the cleaned text
+    return text
