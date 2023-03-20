@@ -4,14 +4,16 @@ import numpy as np
 import re
 import string 
 
-# Local imports
-# from source.constants import PUNCT_TO_REMOVE
+
 import sys
 import os
 target = os.path.abspath(__file__)
 while(target.split("\\")[-1]!="Road"):
     target = os.path.dirname(target)
 sys.path.append(target) 
+
+# Local imports
+from source.constants import PUNCT_TO_REMOVE
 
 # For arabic diacritics
 # pip install pyarabic 
@@ -103,7 +105,6 @@ def remove_phone_numbers(text: str) -> str:
     text = re.sub(r'(\+?\d{2,4}[ -]?)?\d{9,10}', '', text)
     return text
 
-PUNCT_TO_REMOVE = string.punctuation + '؛،؟«»٪٫٬٭'
 def remove_punctuations(text: str) -> str:
      """
      Remove punctuations from text.
@@ -154,15 +155,13 @@ def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
     # update the reply column with the corresponding reply message
     data["reply"] = data["id"].map(message_reply_dict)
 
-    # delete any rows with non -1 reply_to values
-    data = data[data["reply_to"] == -1]
 
     return data
 
 
 def clean_text(text: str) -> str:
     """
-    This function takes a string input and performs various cleaning operations to remove unwanted characters from the text data.
+    This function takes a string input and performs various cleaning operations.
     The cleaned text is returned as output.
 
     Args:
