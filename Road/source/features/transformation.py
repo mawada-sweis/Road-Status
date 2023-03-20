@@ -5,7 +5,6 @@ import sys
 
 # Related third party imports
 import pandas as pd
-import numpy as np
 
 # Reset the path to the parent folder to import any mudule we want
 target = os.path.abspath(__file__)
@@ -14,34 +13,28 @@ while (target.split("\\")[-1] != "Road"):
 sys.path.append(target)
 
 # Local imports
-from source.constants import question_regex
+from source.constants import QUESTION_REGEX, STATUS_OPEN_REGEX
 
 
 def huara_matches(text):
-    return 1 if re.search(r"[ح خ]وار[ه ة]", text) else 0
-
-
-def reply_message(reply_to_list, id_list, message_list):
-    for i, reply_to_id in enumerate(reply_to_list):
-        if reply_to_id != -1:
-            for j in range(i):
-                if id_list[j] == reply_to_id:
-                    reply_to_list[j] = message_list[i]
-                    break
+    return 1 if re.search(r"[حخ]وار[ه ة]", text) else 0
 
 
 def _categorize_message(text):
-    return 'question' if question_regex.search(text) else 'unknown'
+    return 'question' if QUESTION_REGEX.search(text) else 'unknown'
 
 
-def categorize_message(reply_column, message_column):
-    categorized = []
-    for i, reply in enumerate(reply_column):
-        if reply is np.NAN:
-            message = message_column[i]
-            categorized.append(
-                _categorize_message(message)
-            ) if message is not np.NAN else 'NAN'
-        else:
-            categorized.append('answered')
-    return pd.Series(categorized)
+def categorize_message(row):
+    if pd.isna(row['reply']):
+        message =row['message']
+        return _categorize_message(message)
+    else:
+        return 'answered'
+
+
+def _categorize_status(text):
+    return 1 if STATUS_OPEN_REGEX.search(text) else 0
+
+
+def get_status(reply_msg):
+    return _categorize_status(reply_msg) if pd.notna(reply_msg) else -1
