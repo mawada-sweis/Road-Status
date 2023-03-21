@@ -1,4 +1,5 @@
 # Standard library imports
+from source.constants import COLUMNS_TO_KEEP
 import ast
 import sys
 import os
@@ -13,10 +14,9 @@ while (target.split("\\")[-1] != "Road"):
 sys.path.append(target)
 
 # Local imports
-from source.constants import COLUMNS_TO_KEEP
 
 
-def delete_unnecessery_columns(data: pd.DataFrame) -> None:
+def delete_unnecessery_columns(data: pd.DataFrame) -> pd.DataFrame:
     """Remove all unnecessary columns except id, date, message,
     from_id and reply_to columns.
 
@@ -24,11 +24,13 @@ def delete_unnecessery_columns(data: pd.DataFrame) -> None:
         data (pd.DataFrame): The dataframe that will be modify.
 
     Returns:
-        None
+        (pd.DataFrame): a new DataFrame with only the columns
+            specified in COLUMNS_TO_KEEP list.
     """
     return data[COLUMNS_TO_KEEP].copy()
 
-def extract_dates(date: pd.Series) -> None:
+
+def extract_dates(date: pd.Series) -> tuple(pd.Series):
     """Extract year, month, day, hour, minute, and second values
     from the date series.
 
@@ -36,15 +38,17 @@ def extract_dates(date: pd.Series) -> None:
         date (pd.Series): The date column to turn it into useful columns
 
     Returns:
-        None
+        tuple(pd.Series): a tuple of six Pandas Series, each corresponding
+            to a different aspect of the original dates:
+            year, month, day, hour, minute, and second.
     """
     date = pd.to_datetime(date)
-    year =date.dt.year
-    month =date.dt.month
-    day =date.dt.day
-    hour =date.dt.hour
-    minute =date.dt.minute
-    second =date.dt.second
+    year = date.dt.year
+    month = date.dt.month
+    day = date.dt.day
+    hour = date.dt.hour
+    minute = date.dt.minute
+    second = date.dt.second
 
     return (year, month, day, hour, minute, second)
 
