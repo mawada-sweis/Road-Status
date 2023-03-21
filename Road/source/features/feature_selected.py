@@ -16,7 +16,7 @@ sys.path.append(target)
 # Local imports
 
 
-def delete_unnecessery_columns(data: pd.DataFrame) -> pd.DataFrame:
+def select_important_feature(data: pd.DataFrame) -> pd.DataFrame:
     """Remove all unnecessary columns except id, date, message,
     from_id and reply_to columns.
 
@@ -30,7 +30,7 @@ def delete_unnecessery_columns(data: pd.DataFrame) -> pd.DataFrame:
     return data[COLUMNS_TO_KEEP].copy()
 
 
-def extract_dates(date: pd.Series) -> tuple(pd.Series):
+def extract_dates(date: pd.Series) -> tuple[pd.Series]:
     """Extract year, month, day, hour, minute, and second values
     from the date series.
 
@@ -38,7 +38,7 @@ def extract_dates(date: pd.Series) -> tuple(pd.Series):
         date (pd.Series): The date column to turn it into useful columns
 
     Returns:
-        tuple(pd.Series): a tuple of six Pandas Series, each corresponding
+        tuple[pd.Series]: a tuple of six Pandas Series, each corresponding
             to a different aspect of the original dates:
             year, month, day, hour, minute, and second.
     """
