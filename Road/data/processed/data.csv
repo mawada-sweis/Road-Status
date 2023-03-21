@@ -1,4 +1,4 @@
-id,message,from_id,year,month,day,hour,minute,second,reply,Huara_barrier,category,status
+id,message,from_id,year,month,day,hour,minute,second,reply,Huara_barrier,category,open_status
 409427,حواره للخارج من نابلس ,325418964,2023,3,7,13,50,2,سالك سالك,1,answered,1
 409429,حوارة في عليها مستوطنين,5633332941,2023,3,7,13,50,18,لا مافب,1,answered,0
 409431,كيف طريق من طوباس لرام الله,5661074759,2023,3,7,13,50,35,,0,question,-1

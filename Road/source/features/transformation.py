@@ -16,25 +16,48 @@ sys.path.append(target)
 from source.constants import QUESTION_REGEX, STATUS_OPEN_REGEX
 
 
-def huara_matches(text):
-    return 1 if re.search(r"[حخ]وار[ه ة]", text) else 0
+def huara_matches(text: str) -> bool:
+    """Check if the given text contains the Arabic word
+        "حوارة" or its variations.
+
+    Args:
+        text (str): The text to search for matches.
+
+    Returns:
+        (bool): 1 if a match is found, 0 otherwise.
+    """
+    return int(bool(re.search(r"[حخ]وار[ه ة]", text)))
 
 
-def _categorize_message(text):
-    return 'question' if QUESTION_REGEX.search(text) else 'unknown'
+def categorize_message(row: pd.Series) -> str:
+    """Categorize a message in a row of data as either a
+        question or an answered message.
 
+    Args:
+        row (pd.Series): A row of data containing a 'message'
+            and a 'reply' column.
 
-def categorize_message(row):
-    if pd.isna(row['reply']):
-        message =row['message']
-        return _categorize_message(message)
-    else:
+    Returns:
+        (str): 'question' if the 'message' column is a question,
+            'answered' if the 'reply' column is not null, 'unknown' otherwise.
+    """
+    if pd.notna(row['reply']):
         return 'answered'
+    message = row['message']
+    return 'question' if QUESTION_REGEX.search(message) else 'unknown'
 
 
-def _categorize_status(text):
-    return 1 if STATUS_OPEN_REGEX.search(text) else 0
+def get_status(reply: str) -> int:
+    """Get the status of a reply message based on the presence
+        of a specific regex pattern.
 
+    Args:
+        reply (str): The reply message to categorize.
 
-def get_status(reply_msg):
-    return _categorize_status(reply_msg) if pd.notna(reply_msg) else -1
+    Returns:
+        (int): 1 if the reply message contains the regex pattern
+            for open status, 0 otherwise.
+        Returns -1 if reply_msg is null or NaN.
+    """
+    
+    return int(bool(STATUS_OPEN_REGEX.search(reply))) if pd.notna(reply) else -1
