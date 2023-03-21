@@ -31,6 +31,6 @@ def read_n_from_file(
     except FileNotFoundError as e:
         logger.exception(f"Error reading file {file_path}: {e}")
         raise
-    except KeyError as e:
+    except KeyError :
         pass  # skip the error if Unnamed: 0 not found in the dataframe columns
     return data

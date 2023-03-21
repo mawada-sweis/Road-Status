@@ -34,7 +34,7 @@ def __get_n_messages(number_of_messages: int = 5) -> dict:
     """
     try:
         messages = read_n_from_file(number_of_messages)
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         return {
             "message": HTTPStatus.NOT_FOUND.phrase,
             "status-code": HTTPStatus.NOT_FOUND,
