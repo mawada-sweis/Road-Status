@@ -1,5 +1,4 @@
 # Standard library imports
-from source.constants import COLUMNS_TO_KEEP
 import ast
 import sys
 import os
@@ -14,6 +13,7 @@ while (target.split("\\")[-1] != "Road"):
 sys.path.append(target)
 
 # Local imports
+from source.constants import COLUMNS_TO_KEEP
 
 
 def select_important_feature(data: pd.DataFrame) -> pd.DataFrame:
@@ -42,13 +42,13 @@ def extract_dates(date: pd.Series) -> tuple[pd.Series]:
             to a different aspect of the original dates:
             year, month, day, hour, minute, and second.
     """
-    date = pd.to_datetime(date)
-    year = date.dt.year
-    month = date.dt.month
-    day = date.dt.day
-    hour = date.dt.hour
-    minute = date.dt.minute
-    second = date.dt.second
+    date = pd.to_datetime(date).dt
+    year = date.year
+    month = date.month
+    day = date.day
+    hour = date.hour
+    minute = date.minute
+    second = date.second
 
     return (year, month, day, hour, minute, second)
 
