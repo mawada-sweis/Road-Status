@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from fastapi import Request
 from Road import app, logger
-from Road.source.utils import read_n_from_file
 
 
 @app.get("/health")
