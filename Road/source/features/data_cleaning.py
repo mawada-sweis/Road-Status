@@ -1,27 +1,21 @@
 # import needed libraries
 import pandas as pd 
-import numpy as np 
 import re
-import string 
 
 # Local imports
-# from source.constants import PUNCT_TO_REMOVE
 import sys
 import os
 target = os.path.abspath(__file__)
 while(target.split("\\")[-1]!="Road"):
     target = os.path.dirname(target)
 sys.path.append(target) 
-
-# Local imports
 from source.constants import PUNCT_TO_REMOVE
 
 # For arabic diacritics 
-from pyarabic.araby import strip_tashkeel, is_tashkeel, is_arabicrange
+from pyarabic.araby import strip_tashkeel
 
 # For converting emojis
 import emoji
-
 
 
 def remove_diacritics(text: str) -> str:
@@ -34,22 +28,9 @@ def remove_diacritics(text: str) -> str:
     Returns:
         str: The Arabic text with diacritics removed.
     """
-    # initialize an empty string to hold the text without diacritics
-    text_without_diacritics = ""
-    # check if the character is in the Arabic Unicode range
-    if is_arabicrange(text):
-        # check if the character is a diacritic
-        if is_tashkeel(text):
-            # if it is a diacritic, remove it using the strip_tashkeel function
-            text_without_diacritics += strip_tashkeel(text)
-        else:
-            # if it is not a diacritic, append it to the text without diacritics
-            text_without_diacritics += text
-    else:
-        # if the character is not in the Arabic Unicode range, append it to the text without diacritics
-        text_without_diacritics += text
     
-    return text_without_diacritics
+    return strip_tashkeel(text)
+        
 
 def remove_emojis(text: str) -> str:
     """
@@ -144,23 +125,9 @@ def clean_text(text: str) -> str:
     Returns:
         str : The cleaned text string.
     """
-    
-    # Remove diacritics (accents) from text
     text = remove_diacritics(text)
-    
-    # Remove emojis and emoticons from text
     text = remove_emojis(text)
-    
-    # Remove URLs from text
     text = remove_urls(text)
-    
-    # Remove phone numbers from text
     text = remove_phone_numbers(text)
-    
-    # Remove punctuation marks from text
     text = remove_punctuations(text)
-    
-
-    # Return the cleaned text
     return text
-
