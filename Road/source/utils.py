@@ -16,7 +16,7 @@ def read_n_from_file(
     Reads n messages from the end of a CSV file and returns them as a pandas DataFrame.
 
     Args:
-        number_of_messages (intو optional): The number of messages to read from the file. Defaults to 5
+        number_of_messages (int, optional): The number of messages to read from the file. Defaults to 5
         file_path (str, optional): The path to the CSV file to read. Defaults to "Road/data/interim/cleaned_data.csv".
 
     Returns:
