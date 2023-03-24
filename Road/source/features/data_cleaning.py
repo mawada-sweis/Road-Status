@@ -5,7 +5,7 @@ import re
 import string 
 
 # Local imports
-from source.constants import PUNCT_TO_REMOVE
+# from source.constants import PUNCT_TO_REMOVE
 import sys
 import os
 target = os.path.abspath(__file__)
@@ -13,11 +13,16 @@ while(target.split("\\")[-1]!="Road"):
     target = os.path.dirname(target)
 sys.path.append(target) 
 
+# Local imports
+from source.constants import PUNCT_TO_REMOVE
+
 # For arabic diacritics 
 from pyarabic.araby import strip_tashkeel, is_tashkeel, is_arabicrange
 
 # For converting emojis
 import emoji
+# pip install emot
+import emot
 
 
 def remove_diacritics(text: str) -> str:
@@ -126,7 +131,39 @@ def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
     # update the reply column with the corresponding reply message
     data["reply"] = data["id"].map(message_reply_dict)
 
-    # delete any rows with non -1 reply_to values
-    data = data[data["reply_to"] == -1]
 
     return data
+
+
+def clean_text(text: str) -> str:
+    """
+    This function takes a string input and performs various cleaning operations.
+    The cleaned text is returned as output.
+
+    Args:
+        text (str): The input string to be cleaned.
+
+    Returns:
+        str : The cleaned text string.
+    """
+    
+    # Remove diacritics (accents) from text
+    text = remove_diacritics(text)
+    
+    # Remove emojis and emoticons from text
+    text = remove_emojis_emoticons(text)
+    
+    # Remove URLs from text
+    text = remove_urls(text)
+    
+    # Remove phone numbers from text
+    text = remove_phone_numbers(text)
+    
+    # Remove punctuation marks from text
+    text = remove_punctuations(text)
+    
+    # Remove multimedia elements from text
+    text = remove_multimedia(text)
+
+    # Return the cleaned text
+    return text
