@@ -21,8 +21,7 @@ from pyarabic.araby import strip_tashkeel, is_tashkeel, is_arabicrange
 
 # For converting emojis
 import emoji
-# pip install emot
-import emot
+
 
 
 def remove_diacritics(text: str) -> str:
@@ -37,19 +36,18 @@ def remove_diacritics(text: str) -> str:
     """
     # initialize an empty string to hold the text without diacritics
     text_without_diacritics = ""
-    for char in text:
-        # check if the character is in the Arabic Unicode range
-        if is_arabicrange(char):
-            # check if the character is a diacritic
-            if is_tashkeel(char):
-                # if it is a diacritic, remove it using the strip_tashkeel function
-                text_without_diacritics += strip_tashkeel(char)
-            else:
-                # if it is not a diacritic, append it to the text without diacritics
-                text_without_diacritics += char
+    # check if the character is in the Arabic Unicode range
+    if is_arabicrange(text):
+        # check if the character is a diacritic
+        if is_tashkeel(text):
+            # if it is a diacritic, remove it using the strip_tashkeel function
+            text_without_diacritics += strip_tashkeel(text)
         else:
-            # if the character is not in the Arabic Unicode range, append it to the text without diacritics
-            text_without_diacritics += char
+            # if it is not a diacritic, append it to the text without diacritics
+            text_without_diacritics += text
+    else:
+        # if the character is not in the Arabic Unicode range, append it to the text without diacritics
+        text_without_diacritics += text
     
     return text_without_diacritics
 
@@ -92,8 +90,8 @@ def remove_phone_numbers(text: str) -> str:
     Returns:
         str: The input text with phone numbers removed.
     """
-    text = re.sub(r'(\+?\d{2,4}[ -]?)?\d{9,10}', '', text)
-    return text
+    return re.sub(r'(\+?\d{2,4}[ -]?)?\d{9,10}', '', text)
+    
 
 def remove_punctuations(text: str) -> str:
      """
@@ -151,7 +149,7 @@ def clean_text(text: str) -> str:
     text = remove_diacritics(text)
     
     # Remove emojis and emoticons from text
-    text = remove_emojis_emoticons(text)
+    text = remove_emojis(text)
     
     # Remove URLs from text
     text = remove_urls(text)
@@ -162,24 +160,7 @@ def clean_text(text: str) -> str:
     # Remove punctuation marks from text
     text = remove_punctuations(text)
     
-    # Remove multimedia elements from text
-    text = remove_multimedia(text)
 
     # Return the cleaned text
     return text
 
-
-def clean_data(row):
-    if isinstance(row["message"], float):
-        return ""  # return empty string for NaN values
-    else:
-        text = row["message"]
-        text = remove_diacritics(text)
-        text = remove_emojis(text)
-        text = remove_urls(text)
-        text = remove_phone_numbers(text)
-        text = remove_punctuations(text)
-        if text == "":
-            return None  # return None for empty strings
-        else:
-            return text
