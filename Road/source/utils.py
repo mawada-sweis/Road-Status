@@ -6,20 +6,17 @@ def function_name(parameter_name:type)->return_type:
     return
 """
 import pandas as pd
-
-import csv
-
 from Road import logger
 
 
 def read_n_from_file(
-    number_of_messages: int=5, file_path: str = "Road/data/interim/feature_selected.csv"
-) -> pd.DataFrame:
+        number_of_messages: int=5,
+        file_path: str="Road/data/raw/data.csv") -> pd.DataFrame:
     """
     Reads n messages from the end of a CSV file and returns them as a pandas DataFrame.
 
     Args:
-        number_of_messages (int): The number of messages to read from the file.
+        number_of_messages (int): The number of messages to read from the file. Defaults to 5
         file_path (str, optional): The path to the CSV file to read. Defaults to "Road/data/interim/cleaned_data.csv".
 
     Returns:
@@ -34,6 +31,4 @@ def read_n_from_file(
     except FileNotFoundError as e:
         logger.exception(f"Error reading file {file_path}: {e}")
         raise
-    except KeyError:
-        pass  # skip the error if Unnamed: 0 not found in the dataframe columns
     return last_n_rows

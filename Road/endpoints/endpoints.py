@@ -13,10 +13,6 @@ def _health_check(request: Request) -> dict:
         "status-code": HTTPStatus.OK,
         "data": {},
     }
-    print(read_n_from_file())
 
     logger.info(f"Health check Status-code :{HTTPStatus.OK} ")
     return response
-
-
-

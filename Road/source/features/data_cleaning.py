@@ -1,20 +1,20 @@
 # import needed libraries
-import pandas as pd 
-import numpy as np 
+import pandas as pd
+import numpy as np
 import re
-import string 
+import string
 
 # Local imports
 # from source.constants import PUNCT_TO_REMOVE
 import sys
 import os
 target = os.path.abspath(__file__)
-while(target.split("\\")[-1]!="Road"):
+while(target.split("\\")[-1] != "Road"):
     target = os.path.dirname(target)
-sys.path.append(target) 
+sys.path.append(target)
 
 # For arabic diacritics
-# pip install pyarabic 
+# pip install pyarabic
 from pyarabic.araby import strip_tashkeel, normalize_hamza
 from pyarabic.araby import is_tashkeel, is_arabicrange
 
@@ -55,6 +55,7 @@ def remove_diacritics(text: str) -> str:
     else:
         return text
 
+
 def remove_emojis_emoticons(text: str) -> str:
     """
     Remove emojis and emoticons from text.
@@ -67,14 +68,18 @@ def remove_emojis_emoticons(text: str) -> str:
     """
     # remove emojis
     text = emoji.demojize(text, delimiters=("", ""))
-    
+
     # remove emoticons
     emo_obj = emot.EMOTICONS_EMO
     for emot1 in emo_obj:
         escaped_emot = re.escape(emot1)
-        text = re.sub(u'({})'.format(escaped_emot), "_".join(emo_obj[emot1].replace(",", "").split()), text)
-    
+        text = re.sub(
+            u'({})'.format(escaped_emot), "_".join(
+                emo_obj[emot1].replace(
+                    ",", "").split()), text)
+
     return text
+
 
 def remove_urls(text: str) -> str:
     """
@@ -88,6 +93,7 @@ def remove_urls(text: str) -> str:
     """
     url_pattern = re.compile(r'https?://\S+|www\.\S+')
     return url_pattern.sub(r'', text)
+
 
 def remove_phone_numbers(text: str) -> str:
     """
@@ -103,17 +109,20 @@ def remove_phone_numbers(text: str) -> str:
     return text
 
 PUNCT_TO_REMOVE = string.punctuation + '؛،؟«»٪٫٬٭'
+
+
 def remove_punctuations(text: str) -> str:
-     """
-     Remove punctuations from text.
+    """
+    Remove punctuations from text.
 
-     Args:
-          text (str): The input text with punctuations.
+    Args:
+         text (str): The input text with punctuations.
 
-     Returns:
-          str: The input text with punctuations removed.
-     """
-     return text.translate(str.maketrans('', '', PUNCT_TO_REMOVE))
+    Returns:
+         str: The input text with punctuations removed.
+    """
+    return text.translate(str.maketrans('', '', PUNCT_TO_REMOVE))
+
 
 def remove_multimedia(text: str) -> str:
     """
@@ -129,6 +138,7 @@ def remove_multimedia(text: str) -> str:
     text = re.sub(r'pic\.twitter\.com/\S+', '', text)
     text = re.sub(r'@(\w+)', '', text)
     return text
+
 
 def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
     """

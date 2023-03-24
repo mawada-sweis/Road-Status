@@ -28,6 +28,7 @@ def delete_unnecessery_columns(data: pd.DataFrame) -> None:
     """
     return data[COLUMNS_TO_KEEP].copy()
 
+
 def extract_dates(date: pd.Series) -> None:
     """Extract year, month, day, hour, minute, and second values
     from the date series.
@@ -39,12 +40,12 @@ def extract_dates(date: pd.Series) -> None:
         None
     """
     date = pd.to_datetime(date)
-    year =date.dt.year
-    month =date.dt.month
-    day =date.dt.day
-    hour =date.dt.hour
-    minute =date.dt.minute
-    second =date.dt.second
+    year = date.dt.year
+    month = date.dt.month
+    day = date.dt.day
+    hour = date.dt.hour
+    minute = date.dt.minute
+    second = date.dt.second
 
     return (year, month, day, hour, minute, second)
 
