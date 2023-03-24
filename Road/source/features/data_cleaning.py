@@ -5,7 +5,7 @@ import re
 import string 
 
 # Local imports
-# from source.constants import PUNCT_TO_REMOVE
+from source.constants import PUNCT_TO_REMOVE
 import sys
 import os
 target = os.path.abspath(__file__)
@@ -13,51 +13,44 @@ while(target.split("\\")[-1]!="Road"):
     target = os.path.dirname(target)
 sys.path.append(target) 
 
-# For arabic diacritics
-# pip install pyarabic 
-from pyarabic.araby import strip_tashkeel, normalize_hamza
-from pyarabic.araby import is_tashkeel, is_arabicrange
+# For arabic diacritics 
+from pyarabic.araby import strip_tashkeel, is_tashkeel, is_arabicrange
 
-# For converting emojis and emot
-# pip install emoji
+# For converting emojis
 import emoji
-# pip install emot
-import emot
 
 
 def remove_diacritics(text: str) -> str:
     """
-    Remove diacritics from Arabic text and reshape it to proper Arabic script.
+    Remove diacritics from Arabic text.
 
     Args:
         text (str): The input Arabic text.
 
     Returns:
-        str: The Arabic text with diacritics removed and reshaped to proper Arabic script.
+        str: The Arabic text with diacritics removed.
     """
-    if isinstance(text, str):
-        # Normalize the text
-        text = normalize_hamza(text)
-        # Remove diacritics using regex
-        diacritic_pattern = re.compile("[ًٌٍَُِّْ]+")
-        text_without_diacritics = diacritic_pattern.sub("", text)
-        # Reshape the text to proper Arabic script
-        reshaped_text = ""
-        for i, char in enumerate(text_without_diacritics):
-            if is_arabicrange(char):
-                if is_tashkeel(char):
-                    reshaped_text += char
-                else:
-                    reshaped_text += strip_tashkeel(char)
+    # initialize an empty string to hold the text without diacritics
+    text_without_diacritics = ""
+    for char in text:
+        # check if the character is in the Arabic Unicode range
+        if is_arabicrange(char):
+            # check if the character is a diacritic
+            if is_tashkeel(char):
+                # if it is a diacritic, remove it using the strip_tashkeel function
+                text_without_diacritics += strip_tashkeel(char)
             else:
-                reshaped_text += char
-        return reshaped_text
-    else:
-        return text
+                # if it is not a diacritic, append it to the text without diacritics
+                text_without_diacritics += char
+        else:
+            # if the character is not in the Arabic Unicode range, append it to the text without diacritics
+            text_without_diacritics += char
+    
+    return text_without_diacritics
 
-def remove_emojis_emoticons(text: str) -> str:
+def remove_emojis(text: str) -> str:
     """
-    Remove emojis and emoticons from text.
+    Remove emojis from text.
 
     Args:
         text (str): The input text.
@@ -65,16 +58,11 @@ def remove_emojis_emoticons(text: str) -> str:
     Returns:
         str: The input text with emojis and emoticons removed.
     """
-    # remove emojis
-    text = emoji.demojize(text, delimiters=("", ""))
-    
-    # remove emoticons
-    emo_obj = emot.EMOTICONS_EMO
-    for emot1 in emo_obj:
-        escaped_emot = re.escape(emot1)
-        text = re.sub(u'({})'.format(escaped_emot), "_".join(emo_obj[emot1].replace(",", "").split()), text)
-    
-    return text
+    new_text = ''
+    for character in text:
+        if not emoji.is_emoji(character):
+            new_text += character
+    return new_text
 
 def remove_urls(text: str) -> str:
     """
@@ -102,7 +90,6 @@ def remove_phone_numbers(text: str) -> str:
     text = re.sub(r'(\+?\d{2,4}[ -]?)?\d{9,10}', '', text)
     return text
 
-PUNCT_TO_REMOVE = string.punctuation + '؛،؟«»٪٫٬٭'
 def remove_punctuations(text: str) -> str:
      """
      Remove punctuations from text.
@@ -115,20 +102,6 @@ def remove_punctuations(text: str) -> str:
      """
      return text.translate(str.maketrans('', '', PUNCT_TO_REMOVE))
 
-def remove_multimedia(text: str) -> str:
-    """
-    Remove multimedia (images, videos, etc.) from text.
-
-    Args:
-        text (str): The input text with multimedia.
-
-    Returns:
-        str: The input text with multimedia removed.
-    """
-    text = re.sub(r'http\S+', '', text)
-    text = re.sub(r'pic\.twitter\.com/\S+', '', text)
-    text = re.sub(r'@(\w+)', '', text)
-    return text
 
 def map_reply_messages(data: pd.DataFrame) -> pd.DataFrame:
     """
