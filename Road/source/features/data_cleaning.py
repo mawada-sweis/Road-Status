@@ -167,3 +167,19 @@ def clean_text(text: str) -> str:
 
     # Return the cleaned text
     return text
+
+
+def clean_data(row):
+    if isinstance(row["message"], float):
+        return ""  # return empty string for NaN values
+    else:
+        text = row["message"]
+        text = remove_diacritics(text)
+        text = remove_emojis(text)
+        text = remove_urls(text)
+        text = remove_phone_numbers(text)
+        text = remove_punctuations(text)
+        if text == "":
+            return None  # return None for empty strings
+        else:
+            return text
