@@ -11,5 +11,5 @@ import string
 
 COLUMNS_TO_KEEP = ['id', 'date', 'message', 'from_id', 'reply_to']
 PUNCT_TO_REMOVE = string.punctuation + '؛،؟«»٪٫٬٭'
-QUESTION_REGEX = re.compile(r"\?*|كيف|شو وضع|\؟*|في اشي|نمر|شي")
+QUESTION_REGEX = re.compile(r"\?*|كيف|شو وضع|\؟*|في اشي|نمر|شي|\!*")
 STATUS_OPEN_REGEX = re.compile(r"(سا+لك[هة]?(ين)?|من[يا]ح[هة]?|ما في ا?شي|فاضي[هة]?|ازم[ةه]|ماشية?|فا?تح[هة]?)")
