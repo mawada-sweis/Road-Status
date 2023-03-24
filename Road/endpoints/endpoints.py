@@ -3,6 +3,7 @@ from fastapi import Request
 from Road import app, logger
 from source.features import data_cleaning as DC
 from source.features import transformation as TF
+import pandas as pd
 
 @app.get("/health")
 def _health_check(request: Request) -> dict:
@@ -18,27 +19,24 @@ def _health_check(request: Request) -> dict:
     return response
 
 
-def clean_and_transform_data(data):
-    # Convert float message values to empty strings
-    data["message"] = data["message"].apply(lambda x: "" if isinstance(x, float) else x)
-
-    # Clean message text
-    data["message"] = data["message"].apply(DC.remove_diacritics)
-    data["message"] = data["message"].apply(DC.remove_emojis_emoticons)
-    data["message"] = data["message"].apply(DC.remove_urls)
-    data["message"] = data["message"].apply(DC.remove_phone_numbers)
-    data["message"] = data["message"].apply(DC.remove_punctuations)
-    data["message"] = data["message"].apply(DC.remove_multimedia)
-
-    # Drop rows with empty message text
-    data = data.drop(data[data["message"] == ""].index)
-
-    # Categorize messages
-    data["category"] = data.apply(TF.categorize_message, axis=1)
-
-    # Determine Huara barrier status
-    data["open_status"] = data["reply"].apply(TF.get_status)
-
+def transformation_data(data: pd.DataFrame) -> pd.DataFrame:
+    """Apply the huara_matches, categorize_message, and get_status functions
+    on the given DataFrame and return the modified DataFrame.
+    Args:
+        data (pd.DataFrame): The DataFrame containing the 'message' and 'reply' columns.
+    Returns:
+        (pd.DataFrame): The modified DataFrame with three additional columns: 
+            'huara_matches', 'message_type', and 'status'.
+    """
+    # new column for huara_matches
+    data['huara_matches'] = data['message'].apply(huara_matches)
+    
+    # new column for message_type
+    data['message_type'] = data.apply(categorize_message, axis=1)
+    
+    # new column for status
+    data['status'] = data['reply'].apply(get_status)
+    
     return data
 
 
