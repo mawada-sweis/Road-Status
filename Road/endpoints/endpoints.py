@@ -10,7 +10,7 @@ def _health_check(request: Request) -> dict:
     response = {
         "message": HTTPStatus.OK.phrase,
         "status-code": HTTPStatus.OK,
-        "data": {}
+        "data": {},
     }
 
     logger.info(f"Health check Status-code :{HTTPStatus.OK} ")

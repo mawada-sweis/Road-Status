@@ -28,4 +28,5 @@ async def my_event_handler(event) -> None:
         )  # write the message with its meta data to the file
 
 
-client.run_until_disconnected()  # Runs the event loop until the library is disconnected.
+# Runs the event loop until the library is disconnected.
+client.run_until_disconnected()
